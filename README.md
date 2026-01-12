@@ -1,21 +1,66 @@
 # Hospital Management System (HMS)
 
-This is a student project.
+## 📌 Integration Concept (Golden Rule)
+"Har module apna kaam karega, aur doosre module se baat API ke zariye karega."
 
-## Purpose
-Students will work in groups on different modules of HMS.
+**Example:**
+Billing ko doctor fee chahiye:
+👉 Billing → Doctor API call karega
+👉 Direct doctor table touch nahi karega
 
-## Rules
-- Each group works on assigned module only
-- No one pushes directly to main branch
-- Pull Request is required
+## 🏫 Student Rules
+1. **Sirf apne module ke folder mein kaam karein ge**
+2. **Direct database ya doosre module ka code touch nahi karein ge**
+3. **Modules API calls ke zariye baat karein ge**
 
-## Core Modules
-1. Authentication & Roles
-2. Patient Management
-3. Doctor Management
-4. Appointment Management
-5. Billing
-6. Pharmacy
-7. Lab Reports
-8. Admin Dashboard
+## 📂 Project Structure
+```
+hospital-management-system/
+│
+├── README.md
+├── docker-compose.yml
+│
+├── backend/
+│   ├── common/
+│   │   ├── db/
+│   │   ├── auth/
+│   │   └── middleware/
+│   │
+│   ├── module-auth/
+│   ├── module-patient/
+│   ├── module-doctor/
+│   ├── module-reception/
+│   ├── module-pharmacy/
+│   ├── module-ward/
+│   ├── module-billing/
+│
+├── frontend/
+│   ├── common/
+│   │   ├── api/
+│   │   └── components/
+│   │
+│   ├── auth/
+│   ├── patient/
+│   ├── doctor/
+│   ├── reception/
+│   ├── pharmacy/
+│   ├── ward/
+│   ├── billing/
+│
+├── docs/
+│   ├── 01-auth.md
+│   ├── 02-patient.md
+│   ├── 03-doctor.md
+│   ├── 04-reception.md
+│   ├── 05-pharmacy.md
+│   ├── 06-ward.md
+│   ├── 07-billing.md
+│
+└── scripts/
+```
+
+## 🛠 Tech Stack
+- **Backend:** Node.js (Express)
+- **Frontend:** React.js
+- **Database:** PostgreSQL
+- **Container:** Docker
