@@ -1,61 +1,113 @@
 import { useState } from 'react';
 
 function Login({ onLogin }) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+        role: 'Patient' // Default selection
+    });
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const getPortalUrl = (role) => {
+        // Map roles to Frontend Ports (Fixed Ports)
+        switch (role) {
+            case 'Patient': return 'http://localhost:5174';
+            case 'Doctor': return 'http://localhost:5175';
+            case 'Receptionist': return 'http://localhost:5176';
+            case 'Pharmacist': return 'http://localhost:5177';
+            case 'Nurse': return 'http://localhost:5178'; // Ward
+            case 'Admin': return 'http://localhost:5179'; // Billing
+            default: return null;
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
-
         try {
+            // Note: Backend must be running on 5001
             const response = await fetch('http://localhost:5001/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify(formData)
             });
-
             const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error(data.message || 'Login failed');
-            }
+            if (response.ok) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
 
-            // TEACHING POINT: Store token securely
-            localStorage.setItem('token', data.token);
-            onLogin(data.user);
+                // Notify Parent
+                if (onLogin) onLogin(data.token);
+
+                // Smart Redirect
+                const targetUrl = getPortalUrl(formData.role);
+                if (targetUrl) {
+                    // Redirect with token query param to auto-login destination
+                    window.location.href = `${targetUrl}?token=${data.token}`;
+                } else {
+                    alert("Login Successful, but no portal found for role: " + formData.role);
+                }
+
+            } else {
+                alert('Login Failed: ' + (data.error || 'Unknown error'));
+            }
         } catch (err) {
-            setError(err.message);
+            alert('Connection Error. Is the Backend/Docker running? ' + err.message);
         }
     };
 
     return (
-        <div style={{ maxWidth: '300px', margin: 'auto', padding: '20px' }}>
-            <h2>Login</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+        <div style={{ maxWidth: '400px', margin: '50px auto', padding: '30px', border: '1px solid #ddd', borderRadius: '10px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
+            <h2 style={{ textAlign: 'center', color: '#333' }}>🏥 HMS Unified Login</h2>
             <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Email:</label>
+
+                <div style={{ marginBottom: '20px' }}>
+                    <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Select Your Role:</label>
+                    <select
+                        name="role"
+                        value={formData.role}
+                        onChange={handleChange}
+                        style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+                    >
+                        <option value="Patient">Patient (Portal)</option>
+                        <option value="Doctor">Doctor (Portal)</option>
+                        <option value="Receptionist">Receptionist (Desk)</option>
+                        <option value="Pharmacist">Pharmacist (Store)</option>
+                        <option value="Nurse">Nurse (Ward)</option>
+                        <option value="Admin">Admin (Billing/Finance)</option>
+                    </select>
+                </div>
+
+                <div style={{ marginBottom: '15px' }}>
                     <input
+                        name="email"
                         type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        style={{ width: '100%', padding: '8px' }}
+                        placeholder="Email Address"
+                        value={formData.email}
+                        onChange={handleChange}
                         required
+                        style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
                     />
                 </div>
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Password:</label>
+
+                <div style={{ marginBottom: '20px' }}>
                     <input
+                        name="password"
                         type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        style={{ width: '100%', padding: '8px' }}
+                        placeholder="Password"
+                        value={formData.password}
+                        onChange={handleChange}
                         required
+                        style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
                     />
                 </div>
-                <button type="submit" style={{ padding: '10px 20px' }}>Login</button>
+
+                <button type="submit" style={{ width: '100%', padding: '12px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '16px' }}>
+                    Login & Access Portal
+                </button>
             </form>
         </div>
     );

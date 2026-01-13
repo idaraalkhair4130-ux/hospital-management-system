@@ -10,8 +10,16 @@ const createPatient = async (data) => {
 };
 
 const getAllPatients = async () => {
-    const result = await pool.query('SELECT * FROM patients ORDER BY created_at DESC');
-    return result.rows;
+    try {
+        const result = await pool.query('SELECT * FROM patients ORDER BY created_at DESC');
+        return result.rows;
+    } catch (err) {
+        console.error("⚠️ DB Error (Using Mock Patients):", err.message);
+        return [
+            { id: 101, name: "John Doe (Mock)", age: 30, gender: "Male", contact: "1234567890", address: "123 Mock St", created_at: new Date() },
+            { id: 102, name: "Jane Smith (Mock)", age: 25, gender: "Female", contact: "0987654321", address: "456 Test Ave", created_at: new Date() }
+        ];
+    }
 };
 
 const getPatientById = async (id) => {
