@@ -1,68 +1,51 @@
-# HMS Project Setup Instructions
+# Hospital Management System (HMS) - Setup Guide
 
-## 1️⃣ Clone Repo
-The repository is cloned in `hospital-management-system`.
+## 🏥 Architecture
+This project is built using a **Microservices-inspired Modular Architecture**.
+- **Total Modules**: 7 (Auth, Patient, Doctor, Reception, Pharmacy, Ward, Billing)
+- **Tech Stack**: Node.js, Express, PostgreSQL, React (Vite).
+- **Communication**: HTTP REST API.
 
-## 2️⃣ Database Setup (PostgreSQL)
-We use Docker for the database.
+## 🚀 One-Click Backend Start
+For Linux/Mac:
+```bash
+chmod +x scripts/start-backends.sh
+./scripts/start-backends.sh
+```
+
+## 🌐 Frontend Ports
+| Module | Port |
+| :--- | :--- |
+| **Landing** | `5170` |
+| Auth | `5173` |
+| Patient | `5174` |
+| Doctor | `5175` |
+| Reception | `5176` |
+| Pharmacy | `5177` |
+| Ward | `5178` |
+| Billing | `5179` |
+
+## 🛠️ Manual Setup
+
+### 1. Database (Docker)
+Ensure Docker is running.
 ```bash
 docker-compose up -d
 ```
-- **Port:** Local port `5433` is mapped to container port `5432` (to avoid conflicts).
-- **Credentials:** `hms_user` / `hms_password`
-- **Database:** `hms_db`
+*Port:* `5433` (Mapped to host)
 
-## 3️⃣ Antigravity IDE
-- Open `hospital-management-system` folder.
-- Work **ONLY** in your assigned module folder.
+### 2. Backend Modules
+Each module in `backend/` is independent.
+```bash
+cd backend/module-patient
+npm install
+npm start
+```
 
-## 4️⃣ Run Auth Module (Backend)
-The Auth module now creates its own database table (`users`) automatically.
-
-### Option A: Run Locally (Recommended for development)
-1. Go to module folder:
-   ```bash
-   cd backend/module-auth
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start server:
-   ```bash
-   npm start
-   ```
-   - Connects to DB at `localhost:5433`.
-   - Creates `users` table on first run.
-
-### Option B: Run via Docker (Future)
-*Currently, we run backend locally and DB via Docker.*
-
-## 5️⃣ API Testing
-Use Postman or Curl.
-- **Register:** `POST http://localhost:5001/api/auth/register`
-  ```json
-  { "email": "test@hms.com", "password": "123", "name": "Test User", "role": "doctor" }
-  ```
-- **Login:** `POST http://localhost:5001/api/auth/login`
-  ```json
-  { "email": "test@hms.com", "password": "123" }
-  ```
-- **Profile:** `GET http://localhost:5001/api/auth/profile`
-  - Header: `Authorization: Bearer <your_token>`
-
-## 6️⃣ Frontend (Auth Module)
-1. Go to frontend folder:
-   ```bash
-   cd frontend/auth
-   ```
-2. Install & Start:
-   ```bash
-   npm install
-   npm start
-   ```
-   - Runs on `http://localhost:5173`
-
-## 7️⃣ Important Notes
-- **Do NOT** commit `.env` files (add to .gitignore if not already).
-- **Do NOT** touch `common` code or other modules.
+### 3. Frontend Modules
+Each module in `frontend/` is independent.
+```bash
+cd frontend/patient
+npm install
+npm start
+```
