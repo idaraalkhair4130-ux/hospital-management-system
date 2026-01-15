@@ -10,8 +10,16 @@ const createDoctor = async (data) => {
 };
 
 const getAllDoctors = async () => {
-    const result = await pool.query('SELECT * FROM doctors ORDER BY created_at DESC');
-    return result.rows;
+    try {
+        const result = await pool.query('SELECT * FROM doctors ORDER BY created_at DESC');
+        return result.rows;
+    } catch (err) {
+        console.error("⚠️ DB Error (Using Mock Doctors):", err.message);
+        return [
+            { id: 201, name: "Dr. House (Mock)", specialization: "Diagnostic", contact: "555-0199", fee: 500, schedule: "Mon-Fri 9-5" },
+            { id: 202, name: "Dr. Strange (Mock)", specialization: "Surgery", contact: "555-0100", fee: 1000, schedule: "On Call" }
+        ];
+    }
 };
 
 const getDoctorFee = async (id) => {

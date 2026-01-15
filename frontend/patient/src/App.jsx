@@ -10,10 +10,16 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>👤 Patient Module</h1>
-      <PatientForm onPatientAdded={handlePatientAdded} />
-      <hr />
+    <div className="container">
+      <header className="header">
+        <h1>👤 Patient Management</h1>
+        <p>Register and manage patient records</p>
+      </header>
+
+      <section className="card">
+        <PatientForm onPatientAdded={handlePatientAdded} />
+      </section>
+
       <PatientList refreshKey={refreshKey} />
     </div>
   );

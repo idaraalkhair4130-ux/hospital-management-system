@@ -10,11 +10,16 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>🛏️ Ward Module</h1>
-      <p>Click on a bed to toggle Available/Occupied status.</p>
-      <BedForm onBedAdded={handleRefresh} />
-      <hr />
+    <div className="container">
+      <header className="header">
+        <h1>🏥 Ward Management Dashboard</h1>
+        <p>Manage beds, admissions, and discharges efficiently</p>
+      </header>
+
+      <section className="card">
+        <BedForm onBedAdded={handleRefresh} />
+      </section>
+
       <BedDashboard refreshKey={refreshKey} />
     </div>
   );

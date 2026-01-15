@@ -32,19 +32,50 @@ function BedForm({ onBedAdded }) {
         }
     };
 
+
     return (
-        <form onSubmit={handleSubmit} style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '20px' }}>
-            <h3>Add New Bed</h3>
-            <input name="bed_number" placeholder="Bed Number (e.g., A-101)" value={formData.bed_number} onChange={handleChange} required style={{ display: 'block', margin: '5px 0' }} />
-            <select name="type" value={formData.type} onChange={handleChange} style={{ display: 'block', margin: '5px 0' }}>
-                <option>General</option>
-                <option>ICU</option>
-                <option>Private</option>
-                <option>Emergency</option>
-            </select>
-            <input name="price" type="number" placeholder="Price per Day ($)" value={formData.price} onChange={handleChange} required style={{ display: 'block', margin: '5px 0' }} />
-            <button type="submit">Add Bed</button>
-        </form>
+        <div>
+            <h2>➕ Add New Bed</h2>
+            <form onSubmit={handleSubmit} className="form-grid">
+                <div className="form-group">
+                    <label>Bed Number (e.g., A-101)</label>
+                    <input
+                        name="bed_number"
+                        placeholder="Room-Bed"
+                        value={formData.bed_number}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label>Ward Type</label>
+                    <select name="type" value={formData.type} onChange={handleChange}>
+                        <option>General Ward</option>
+                        <option>ICU</option>
+                        <option>Private Room</option>
+                        <option>Emergency</option>
+                        <option>Pediatric</option>
+                    </select>
+                </div>
+
+                <div className="form-group">
+                    <label>Price per Day ($)</label>
+                    <input
+                        name="price"
+                        type="number"
+                        placeholder="0.00"
+                        value={formData.price}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                <div className="form-group">
+                    <button type="submit" className="primary-btn">Add Bed to System</button>
+                </div>
+            </form>
+        </div>
     );
 }
 

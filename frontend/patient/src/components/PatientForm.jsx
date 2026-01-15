@@ -35,19 +35,67 @@ function PatientForm({ onPatientAdded }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '20px' }}>
-            <h3>Register Patient</h3>
-            <input name="name" placeholder="Name" value={formData.name} onChange={handleChange} required style={{ display: 'block', margin: '5px 0' }} />
-            <input name="age" type="number" placeholder="Age" value={formData.age} onChange={handleChange} required style={{ display: 'block', margin: '5px 0' }} />
-            <select name="gender" value={formData.gender} onChange={handleChange} style={{ display: 'block', margin: '5px 0' }}>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-            </select>
-            <input name="contact" placeholder="Contact" value={formData.contact} onChange={handleChange} style={{ display: 'block', margin: '5px 0' }} />
-            <textarea name="address" placeholder="Address" value={formData.address} onChange={handleChange} style={{ display: 'block', margin: '5px 0' }} />
-            <button type="submit">Register</button>
-        </form>
+        <div>
+            <h2>➕ Register New Patient</h2>
+            <form onSubmit={handleSubmit}>
+                <div className="form-grid">
+                    <div className="form-group">
+                        <label>Patient Name</label>
+                        <input
+                            name="name"
+                            placeholder="Full name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Age</label>
+                        <input
+                            name="age"
+                            type="number"
+                            placeholder="0"
+                            value={formData.age}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Gender</label>
+                        <select name="gender" value={formData.gender} onChange={handleChange}>
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Contact Number</label>
+                        <input
+                            name="contact"
+                            placeholder="Phone number"
+                            value={formData.contact}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+
+                <div className="form-group">
+                    <label>Address</label>
+                    <textarea
+                        name="address"
+                        placeholder="Full address"
+                        value={formData.address}
+                        onChange={handleChange}
+                        rows="2"
+                    />
+                </div>
+
+                <button type="submit" className="primary-btn">Register Patient</button>
+            </form>
+        </div>
     );
 }
 

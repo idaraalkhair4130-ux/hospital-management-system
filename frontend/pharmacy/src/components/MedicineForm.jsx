@@ -34,14 +34,59 @@ function MedicineForm({ onMedicineAdded }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '20px' }}>
-            <h3>Add Medicine</h3>
-            <input name="name" placeholder="Medicine Name" value={formData.name} onChange={handleChange} required style={{ display: 'block', margin: '5px 0' }} />
-            <input name="stock" type="number" placeholder="Stock Quantity" value={formData.stock} onChange={handleChange} required style={{ display: 'block', margin: '5px 0' }} />
-            <input name="price" type="number" placeholder="Price ($)" value={formData.price} onChange={handleChange} required style={{ display: 'block', margin: '5px 0' }} />
-            <input name="expiry_date" type="date" placeholder="Expiry Date" value={formData.expiry_date} onChange={handleChange} style={{ display: 'block', margin: '5px 0' }} />
-            <button type="submit">Add Medicine</button>
-        </form>
+        <div className="card">
+            <h2>Add New Medicine</h2>
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label>Medicine Name</label>
+                    <input
+                        name="name"
+                        placeholder="e.g. Paracetamol"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                <div className="grid-2" style={{ marginBottom: 0, gap: '1rem' }}>
+                    <div className="form-group">
+                        <label>Stock Quantity</label>
+                        <input
+                            name="stock"
+                            type="number"
+                            placeholder="0"
+                            value={formData.stock}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Price ($)</label>
+                        <input
+                            name="price"
+                            type="number"
+                            step="0.01"
+                            placeholder="0.00"
+                            value={formData.price}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div className="form-group">
+                    <label>Expiry Date</label>
+                    <input
+                        name="expiry_date"
+                        type="date"
+                        value={formData.expiry_date}
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <button type="submit">Add Medicine</button>
+            </form>
+        </div>
     );
 }
 

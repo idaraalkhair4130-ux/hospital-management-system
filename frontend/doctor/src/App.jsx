@@ -10,10 +10,16 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>👨‍⚕️ Doctor Module</h1>
-      <DoctorForm onDoctorAdded={handleDoctorAdded} />
-      <hr />
+    <div className="container">
+      <header className="header">
+        <h1>👨‍⚕️ Doctor Management</h1>
+        <p>Manage doctor profiles and schedules</p>
+      </header>
+
+      <section className="card">
+        <DoctorForm onDoctorAdded={handleDoctorAdded} />
+      </section>
+
       <DoctorList refreshKey={refreshKey} />
     </div>
   );

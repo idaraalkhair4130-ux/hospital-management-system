@@ -33,13 +33,49 @@ function BillForm({ onBillCreated }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '20px' }}>
-            <h3>Generate Bill</h3>
-            <input name="patient_name" placeholder="Patient Name" value={formData.patient_name} onChange={handleChange} required style={{ display: 'block', margin: '5px 0' }} />
-            <textarea name="description" placeholder="Description (e.g., Surgery, Consultation)" value={formData.description} onChange={handleChange} style={{ display: 'block', margin: '5px 0' }} />
-            <input name="amount" type="number" placeholder="Amount ($)" value={formData.amount} onChange={handleChange} required style={{ display: 'block', margin: '5px 0' }} />
-            <button type="submit">Create Bill</button>
-        </form>
+        <div>
+            <h2>📝 Generate New Bill</h2>
+            <form onSubmit={handleSubmit}>
+                <div className="form-grid">
+                    <div className="form-group">
+                        <label>Patient Name</label>
+                        <input
+                            name="patient_name"
+                            placeholder="Enter patient name"
+                            value={formData.patient_name}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Bill Amount ($)</label>
+                        <input
+                            name="amount"
+                            type="number"
+                            step="0.01"
+                            placeholder="0.00"
+                            value={formData.amount}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div className="form-group">
+                    <label>Description / Services</label>
+                    <textarea
+                        name="description"
+                        placeholder="e.g., Surgery, Consultation, Lab Tests, Medications..."
+                        value={formData.description}
+                        onChange={handleChange}
+                        rows="3"
+                    />
+                </div>
+
+                <button type="submit" className="primary-btn">Create Bill</button>
+            </form>
+        </div>
     );
 }
 

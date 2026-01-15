@@ -33,17 +33,39 @@ function IssueMedicine({ refreshKey, onMedicineIssued }) {
     }
 
     return (
-        <form onSubmit={handleIssue} style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '20px' }}>
-            <h3>Issue Medicine</h3>
-            <select value={selectedMed} onChange={e => setSelectedMed(e.target.value)} required style={{ display: 'block', marginBottom: '5px' }}>
-                <option value="">Select Medicine...</option>
-                {medicines.map(m => (
-                    <option key={m.id} value={m.id}>{m.name} (Stock: {m.stock})</option>
-                ))}
-            </select>
-            <input type="number" min="1" value={quantity} onChange={e => setQuantity(e.target.value)} style={{ display: 'block', marginBottom: '5px' }} />
-            <button type="submit">Issue</button>
-        </form>
+        <div className="card">
+            <h2>Issue Medicine</h2>
+            <form onSubmit={handleIssue}>
+                <div className="form-group">
+                    <label>Select Medicine</label>
+                    <select
+                        value={selectedMed}
+                        onChange={e => setSelectedMed(e.target.value)}
+                        required
+                    >
+                        <option value="">-- Choose Medicine --</option>
+                        {medicines.map(m => (
+                            <option key={m.id} value={m.id} disabled={m.stock <= 0}>
+                                {m.name} (Stock: {m.stock})
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="form-group">
+                    <label>Quantity to Issue</label>
+                    <input
+                        type="number"
+                        min="1"
+                        value={quantity}
+                        onChange={e => setQuantity(e.target.value)}
+                        required
+                    />
+                </div>
+
+                <button type="submit" disabled={!selectedMed}>Issue Medicine</button>
+            </form>
+        </div>
     )
 }
 

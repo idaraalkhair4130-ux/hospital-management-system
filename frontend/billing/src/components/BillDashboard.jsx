@@ -26,38 +26,58 @@ function BillDashboard({ refreshKey }) {
     }
 
     return (
-        <div>
-            <h3>Billing Dashboard</h3>
-            <table border="1" cellPadding="5" style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Patient</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {bills.map(b => (
-                        <tr key={b.id}>
-                            <td>{b.id}</td>
-                            <td>{b.patient_name}</td>
-                            <td>{b.description}</td>
-                            <td>${b.amount}</td>
-                            <td style={{ color: b.status === 'Paid' ? 'green' : 'red', fontWeight: 'bold' }}>
-                                {b.status}
-                            </td>
-                            <td>
-                                {b.status === 'Pending' && (
-                                    <button onClick={() => handlePay(b.id)}>Mark Paid</button>
-                                )}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div className="card">
+            <h2>📊 Billing Records</h2>
+
+            {bills.length === 0 ? (
+                <div className="text-center" style={{ padding: '3rem', color: '#64748b' }}>
+                    <p>No bills found.</p>
+                    <p>Create a new bill using the form above.</p>
+                </div>
+            ) : (
+                <div className="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Bill ID</th>
+                                <th>Patient Name</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {bills.map(b => (
+                                <tr key={b.id}>
+                                    <td><strong>#{b.id}</strong></td>
+                                    <td>{b.patient_name}</td>
+                                    <td>{b.description || 'N/A'}</td>
+                                    <td className="amount">${parseFloat(b.amount).toFixed(2)}</td>
+                                    <td>
+                                        <span className={`badge ${b.status === 'Paid' ? 'badge-paid' : 'badge-pending'}`}>
+                                            {b.status}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {b.status === 'Pending' && (
+                                            <button
+                                                onClick={() => handlePay(b.id)}
+                                                className="secondary-btn"
+                                            >
+                                                ✓ Mark as Paid
+                                            </button>
+                                        )}
+                                        {b.status === 'Paid' && (
+                                            <span style={{ color: '#10b981', fontSize: '0.9rem' }}>✓ Completed</span>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 }

@@ -10,10 +10,16 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>💰 Billing Module</h1>
-      <BillForm onBillCreated={handleBillCreated} />
-      <hr />
+    <div className="container">
+      <header className="header">
+        <h1>💰 Billing & Payments</h1>
+        <p>Manage patient bills and payment records</p>
+      </header>
+
+      <section className="card">
+        <BillForm onBillCreated={handleBillCreated} />
+      </section>
+
       <BillDashboard refreshKey={refreshKey} />
     </div>
   );

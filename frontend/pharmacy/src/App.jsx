@@ -11,18 +11,24 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>💊 Pharmacy Module</h1>
-      <div style={{ display: 'flex', gap: '20px' }}>
-        <div style={{ flex: 1 }}>
+    <div className="container">
+      <header className="header">
+        <h1>💊 Pharmacy Management</h1>
+        <div style={{ opacity: 0.9 }}>Hospital Management System</div>
+      </header>
+
+      <div className="grid-2">
+        <section>
           <MedicineForm onMedicineAdded={handleRefresh} />
-        </div>
-        <div style={{ flex: 1 }}>
+        </section>
+        <section>
           <IssueMedicine refreshKey={refreshKey} onMedicineIssued={handleRefresh} />
-        </div>
+        </section>
       </div>
-      <hr />
-      <MedicineList refreshKey={refreshKey} />
+
+      <section className="card">
+        <MedicineList refreshKey={refreshKey} />
+      </section>
     </div>
   );
 }
