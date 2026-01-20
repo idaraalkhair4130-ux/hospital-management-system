@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # Database Service
+  postgres:
+    image: postgres:14-alpine
+    container_name: hms_postgres
+    environment:
+      POSTGRES_USER: hms_user
+      POSTGRES_PASSWORD: hms_password
+      POSTGRES_DB: hms_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  # Backend Service (Placeholder)
+  # backend:
+  #   build: ./backend
+  #   ports:
+  #     - "5000:5000"
+  #   depends_on:
+  #     - postgres
+
+  # Frontend Service (Placeholder)
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "3000:3000"
+
+volumes:
+  postgres_data:
