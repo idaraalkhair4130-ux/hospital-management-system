@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HMS | Login</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Background Shapes -->
+    <div class="body-bg-shape"></div>
+    <div class="body-bg-shape"></div>
+
+    <div class="auth-container">
+        <div class="glass-card">
+            <div class="logo-area">
+                <span class="material-icons-round logo-icon">local_hospital</span>
+            </div>
+
+            <h1 class="title">Welcome Back</h1>
+            <p class="subtitle">Enter your credentials to access the HMS</p>
+
+            <!-- Error Alert -->
+            <div id="errorAlert" class="alert alert-error"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="username" class="form-input" placeholder="e.g. admin, doctor" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+
+            <div class="footer-links">
+                <a href="#" onclick="alert('Contact System Admin for reset.')">Forgot Password?</a>
+            </div>
+
+            <div style="margin-top: 20px; font-size: 0.8rem; color: #666;">
+                <p>Demo Credentials:</p>
+                <p>admin / admin123</p>
+                <p>doctor / doctor123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/mock_db.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Check if already logged in
+        AUTH.redirectIfLoggedIn();
+
+        // Handle Login
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const alertBox = document.getElementById('errorAlert');
+
+            const result = AUTH.login(user, pass);
+
+            if (result.success) {
+                // Success - Redirect
+                window.location.href = 'dashboard.html';
+            } else {
+                // Error
+                alertBox.textContent = result.message;
+                alertBox.style.display = 'block';
+
+                // Shake effect
+                document.querySelector('.glass-card').style.animation = 'none';
+                document.querySelector('.glass-card').offsetHeight; /* trigger reflow */
+                document.querySelector('.glass-card').style.animation = 'shake 0.5s';
+            }
+        });
+    </script>
+
+    <style>
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            50% {
+                transform: translateX(10px);
+            }
+
+            75% {
+                transform: translateX(-10px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</body>
+
+</html>
