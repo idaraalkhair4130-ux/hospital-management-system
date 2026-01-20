@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HMS | Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="db-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div>
+                <div class="logo-area" style="text-align: left; margin-bottom: 3rem;">
+                    <span class="material-icons-round logo-icon" style="font-size: 2rem;">local_hospital</span>
+                    <span
+                        style="font-size: 1.5rem; font-weight: 700; color: var(--primary); vertical-align: super; margin-left: 10px;">HMS</span>
+                </div>
+
+                <nav id="navLinks">
+                    <!-- Links injected by JS based on Role -->
+                </nav>
+            </div>
+
+            <div>
+                <a href="#" class="nav-item logout" onclick="AUTH.logout()">
+                    <span class="material-icons-round">logout</span>
+                    Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="user-profile">
+                <img id="userAvatar" src="" alt="Avatar" class="avatar">
+                <div>
+                    <h2 id="userName" style="font-size: 1.2rem;">Loading...</h2>
+                    <span id="userRole" class="badge">Loading...</span>
+                </div>
+            </header>
+
+            <!-- Dashboard Content Area -->
+            <div id="roleContent">
+                <!-- Content loaded here by dashboard.js -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/mock_db.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+
+    <script>
+        // GUARD: Ensure user is logged in
+        AUTH.requireAuth();
+
+        const user = AUTH.getUser();
+
+        // Update UI with User Info
+        document.getElementById('userName').textContent = user.fullName;
+        document.getElementById('userAvatar').src = user.avatar;
+        document.getElementById('userRole').textContent = user.role;
+        document.getElementById('userRole').classList.add(`badge-${user.role.toLowerCase()}`);
+
+        // Helper to create Links
+        function createLink(icon, text, onClick) {
+            return `<a href="#" class="nav-item" onclick="${onClick}; setActive(this)">
+                        <span class="material-icons-round">${icon}</span>
+                        ${text}
+                    </a>`;
+        }
+
+        // Highlight Active Link helper
+        window.setActive = (el) => {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // Render Sidebar based on Role
+        const nav = document.getElementById('navLinks');
+
+        if (user.role === 'ADMIN') {
+            nav.innerHTML = `
+                ${createLink('dashboard', 'Overview', 'DASHBOARD.renderOverview()')}
+                ${createLink('people', 'Manage Users', 'DASHBOARD.renderUserManagement()')}
+                ${createLink('settings', 'System Settings', 'DASHBOARD.renderSettings()')}
+            `;
+        }
+        else if (user.role === 'DOCTOR') {
+            nav.innerHTML = `
+                ${createLink('dashboard', 'Dashboard', 'DASHBOARD.renderDoctorOverview()')}
+                ${createLink('calendar_today', 'Appointments', 'DASHBOARD.renderDoctorAppointments()')}
+            `;
+        }
+        else {
+            nav.innerHTML = `
+                ${createLink('dashboard', 'Dashboard', 'DASHBOARD.renderOverview()')}
+            `;
+        }
+
+        // Initialize Dashboard View
+        DASHBOARD.init();
+
+        // Set first link active
+        setTimeout(() => {
+            const firstLink = document.querySelector('#navLinks .nav-item');
+            if (firstLink) firstLink.classList.add('active');
+        }, 100);
+
+    </script>
+</body>
+
+</html>
